@@ -32,12 +32,12 @@ Testers on development teams are often used to testing changes to the functional
 
 ## Usage
 
-## Contributing
+This repo is to gather together resources and exercises for operability testing and enhancing testing through operability.
 
-See [the contributing file](CONTRIBUTING.md)!
+## Contributing
 
 PRs accepted.
 
 ## License
 
-[MIT © Ash Winter.](../LICENSE)
+[MIT © Ash Winter.](./LICENSE)
