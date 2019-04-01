@@ -3,6 +3,13 @@
 [![license](https://img.shields.io/github/license/:user/:repo.svg)](./LICENSE)
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
+### Table of Contents
+
+- [Background](#background)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Background
 
 Reliability, handling failure gracefully and recovering quickly are becoming increasingly important as the software development world adopts DevOps culture and practices. Outages and security failures are big news and many companies are investing heavily to avoid these challenges. Operable systems are easy to deploy and test, provide actionable information about their state and behave more predictably in adverse conditions. 
@@ -21,14 +28,6 @@ Testers on development teams are often used to testing changes to the functional
 * Recognise the key terminology pertaining to logging, monitoring and system control measures and their role in operability. 
 * Understand how to test systems for the quality of operational information that they emit and how this can help improve information gained through testing.
 * Apply the understanding of operational insights to testing deployment pipelines and operational hooks to enhance overall operability.
-
-### Table of Contents
-
-- [Background](#background)
-- [Usage](#usage)
-- [API](#api)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Usage
 
