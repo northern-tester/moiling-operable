@@ -13,7 +13,7 @@ Hopefully the title resonates for the primary audience (testers) and through the
   * I get asked often by testers what their roles might be in 'DevOps' and operability creates a useful focus.
 * What problems are they facing?
   * I think they are faced by a request/need for them to get involved in testing new platforms, disposable environments, cloud based systems but without the fundamentals of operability.
-  * Also, I think often without the technical know how to get involved, plus there can be a lingering resistance from operations teams to let testers get involved, alas you still have to prove yourself often.
+  * Also, I think often without the operational know how to get involved, plus there can be a lingering resistance from operations teams to let testers in, alas you still have to prove yourself often.
   * As testers are often (in my experience) not involved in operability changes, they miss opportunities to enhance their testing skills and over testability of the system.
 * What skills are they developing?
   * There are two threads to this:
@@ -40,12 +40,29 @@ Hopefully the title resonates for the primary audience (testers) and through the
 * Are there any tools or programmes they are required to use?
   * Docker/Docker compose for general setup, mostly just for ease/speed of use
   * Jenkins for deployment based sessions
-  * Git as a source control tool, mostly pull, rather than push
+  * Git as a source control tool, mostly pull, rather than push, so no accounts as such require.
+  * Probably use something like Localstack for the cloud parts, rather than having people set up accounts.
 
 ## Course Goals
 
-* What skills and/or knowledge will learners walk away with or develop?
-* What problems they will be able to solve?
+Lets enumerate the characteristics of an operable system for this:
+
+* When failures occur, they are obvious and recoverable.
+* Logging is coherent, both in structure and location.
+* Those who need to know how to operate the system, know how.
+* Dependencies are known and their risks to your system are mitigated.
+* Traffic to the system is known and can be throttled when needed.
+* The system has hooks to report on system health and configuration status.
+* The system can be partially available by component, rather than a state of complete failure.
+
+### What skills and/or knowledge will learners walk away with or develop/problems they can solve.
+
+* Recognition of importance of logging to improving testing
+* Introduce testing of deployment pipelines to enhance their operability
+* Create a operability test approach for system failover scenarios.
+* Add meaningful operability hooks for systems via a HTTP API
+* Know how to test system protection measures for dependencies, such as circuit breakers
+* Model system traffic and access points to add to a team knowledge base
 
 ## Course Description
 
@@ -59,12 +76,6 @@ Testers on development teams are often used to testing changes to the functional
 * As testers, we strive to add value and testing for reliability enables us to use our risk analysis skills to explore for failures and how to recover.
 * If we get involved with helping our system to emit better information from an operability standpoint, testability through observability and control will likely be enhanced.
 * Rather than having shallow status checks, testers can contribute to meaningful monitoring of customer journeys and how reliability and recovery are measured.
-
-### Takeaways
-
-* Recognise the key terminology pertaining to logging, monitoring and system control measures and their role in operability.
-* Understand how to test systems for the quality of operational information that they emit and how this can help improve information gained through testing.
-* Apply the understanding of operational insights to testing deployment pipelines and operational hooks to enhance overall operability.
 
 ## Lesson Plan
 
