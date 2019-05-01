@@ -1,0 +1,100 @@
+# Logging Code Notes
+
+## Simple Logging
+
+Run the app...
+
+First add, basic logging to the web app:
+
+File: src/services/express/index.js
+
+app.use(morgan('tiny'))
+
+Second, lets turn on database logging:
+
+File: src/config.js
+
+debug: true
+
+Rerun the app
+
+Make some requests via the Postman Collection
+
+## Advanced Logging
+
+File: src/services/express/index.js
+
+Add to the logger function
+
+app.use(morgan('[:date[clf]] :id :status :method :url :response-time ":user-agent"'));
+
+Add a unique id within the logs for each request in express
+
+## Adding Id's to Logs 
+
+var sessionId = generateSafeId();
+
+morgan.token('id', function getId(){
+return sessionId
+});
+
+## Adding Structure to Logs
+
+Lets start with mongo, gets a bit more complex now.
+
+File: src/services/mongoose/index.js
+
+mongoose.set('debug', function (coll, method, query, doc, options) {
+let set = {
+	coll: coll,
+	method: method,
+	query: query,
+	doc: doc,
+	options: options
+}
+
+console.info({
+	dbQuery: set
+	})
+})
+
+Then lets amend the express bit too
+
+File: src/services/express/index.js
+
+app.use(morgan, function ([:date[clf]], :id, :status, :method, :url, :response-time, ":user-agent"') {
+let set = {
+	date: date,
+	id: id,
+	status: status,
+	method: method,
+	url: url,
+	responseTime: responseTime,
+	userAgent: userAgent
+}
+
+console.info({
+	webRequest: set
+	})
+})
+
+## Write to file on both, while maintaining std out
+
+File: src/services/express/index.js
+
+var rfs = require('rotating-file-stream');
+
+//Get the log directory
+var logDirectory = path.join(__dirname, 'logs');
+
+//Create a rotating write stream
+var accessLogStream = rfs('access.log', {
+interval: '1d',
+path: logDirectory
+});
+
+app.use(logger('[:date[clf]] :id :status :method :url :response-time ":user-agent"', {stream:accessLogStream}));
+
+And now the mongo logs:
+
+File: src/services/mongoose/index.js

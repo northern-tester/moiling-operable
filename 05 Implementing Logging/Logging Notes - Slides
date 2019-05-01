@@ -1,0 +1,21 @@
+Logging Notes - Slides
+
+* Adding logs and metrics seen as a drag
+* Ironic really given there roots as a replication engine
+
+Enumerate all likely failure modes of a system, where we as testers can come in
+
+* Network communication - calling to a remote API or service
+* Resource acquisition - writing to a file
+* Non-trivial operation - in memory processing
+
+Where do we think our application is most likely to fail? 
+
+Important to use well defined, meaningful event identifiers
+
+LocalStorageWriteFailure
+CloudAPIDataSendFailure
+
+How does this help us as testers?
+
+***STILL WANT TO LOG TO STD OUT AND THE FILE***
