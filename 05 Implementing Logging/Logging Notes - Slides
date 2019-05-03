@@ -1,4 +1,4 @@
-Logging Notes - Slides
+# Logging Notes - Slides
 
 * Adding logs and metrics seen as a drag
 * Ironic really given there roots as a replication engine
@@ -9,13 +9,40 @@ Enumerate all likely failure modes of a system, where we as testers can come in
 * Resource acquisition - writing to a file
 * Non-trivial operation - in memory processing
 
+? Discussion Point
+
 Where do we think our application is most likely to fail? 
+
+***STILL WANT TO LOG TO STD OUT AND THE FILE***
+
+
+## Simple Logging
+
+
+## Advanced Logging
+
+## Adding Unique Id's to Logs 
+
+## Adding Structure to Logs
+
+* Readability for machines
+* Don’t rely on manual search of log files!
+
+## Adding Event Id to Individual Routes
 
 Important to use well defined, meaningful event identifiers
 
-LocalStorageWriteFailure
-CloudAPIDataSendFailure
+* LocalStorageWriteFailure
+* CloudAPIDataSendFailure
 
-How does this help us as testers?
+? How does this help us as testers ?
 
-***STILL WANT TO LOG TO STD OUT AND THE FILE***
+* Add identifiers to our application startup and database connection log messages
+* Any failure areas
+
+## Write to file on both, while maintaining std out
+
+## Next Level
+
+* tracing: linking together related work execution across separate machines or systems
+* Tracing is concerned with linking together processing to a single logical request, 
