@@ -1,3 +1,13 @@
+
+
+
+
+
+
+
+
+
+
 # Logging Code Notes
 
 ## Simple Logging
@@ -20,13 +30,41 @@ Rerun the app
 
 Make some requests via the Postman Collection
 
+
+## Adding Events
+
+File: src/app.js
+
+### Mongo connection
+
+mongoose.connect(mongo.uri, {useNewUrlParser: true}, function () {
+  console.info(`MongoDBConnectionSuccess: connected to ${mongo.uri}`)
+});
+
+### Application start up
+
+setImmediate(() => {
+  server.listen(port, ip, () => {
+    console.log('ExpressApplicationStartedSucccess: Express server listening on http://%s:%d, in %s mode', ip, port, env)
+  })
+})
+
+### Mongo Error
+
+
+
+
+
+
+
+
 ## Advanced Logging
 
 File: src/services/express/index.js
 
 Add to the logger function
 
-app.use(morgan('[:date[clf]] :id :status :method :url :response-time ":user-agent"'));
+app.use(morgan('[:date[clf]] :status :method :url :response-time ":user-agent"'));
 
 Add a unique id within the logs for each request in express
 
@@ -98,3 +136,13 @@ app.use(logger('[:date[clf]] :id :status :method :url :response-time ":user-agen
 And now the mongo logs:
 
 File: src/services/mongoose/index.js
+
+## What we want to end up with
+
+Structured logs for mongo
+
+Structured logs for each endpoint with a decent name
+
+Writing to file
+
+Rotating daily
