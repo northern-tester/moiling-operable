@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 # Logging Code Notes
 
 ## Simple Logging
@@ -30,8 +20,69 @@ Rerun the app
 
 Make some requests via the Postman Collection
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Adding Events
+## Advanced Logging
+
+File: src/services/express/index.js
+
+Add to the morgan function
+
+app.use(morgan('[:date[clf]] :status :method :url :response-time ":user-agent"'));
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Adding Id's to Logs 
+
+File: src/services/express/index.js
+
+morgan.token('id', function getId(){
+return generateSafeId();
+});
+
+app.use(morgan('[:date[clf]] :id :status :method :url :response-time ":user-agent"'));
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Adding Structure to Logs
+
+### Lets start with mongo, gets a bit more complex now.
+
+File: src/services/mongoose/index.js
+
+import generateSafeId from 'generate-safe-id';
+
+mongoose.set('debug', function (coll, method, query, doc) {
+let set = {
+	id: generateSafeId(),
+	coll: coll,
+	method: method,
+	query: query,
+	doc: doc,
+}
+
+console.info({
+	dbQuery: set
+	})
+})
+
+### Lets move on to our web requests
+
+File: src/services/express/index.js
+
+  const json = require('morgan-json');
+
+  const format = json({
+    short: ':id :method :originalUrl :status',
+    length: ':res[content-length]',
+    'response-time': ':response-time ms'
+  });
+
+  app.use(morgan(format));
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Adding Diagnostic Events
 
 File: src/app.js
 
@@ -51,70 +102,56 @@ setImmediate(() => {
 
 ### Mongo Error
 
-
-
-
-
-
-
-
-## Advanced Logging
-
-File: src/services/express/index.js
-
-Add to the logger function
-
-app.use(morgan('[:date[clf]] :status :method :url :response-time ":user-agent"'));
-
-Add a unique id within the logs for each request in express
-
-## Adding Id's to Logs 
-
-var sessionId = generateSafeId();
-
-morgan.token('id', function getId(){
-return sessionId
-});
-
-## Adding Structure to Logs
-
-Lets start with mongo, gets a bit more complex now.
-
 File: src/services/mongoose/index.js
 
-mongoose.set('debug', function (coll, method, query, doc, options) {
-let set = {
-	coll: coll,
-	method: method,
-	query: query,
-	doc: doc,
-	options: options
-}
+mongoose.connection.on('error', (err) => {
+  console.error('MongoDBConnectionError: ' + err);
+  process.exit(-1)
+});
 
-console.info({
-	dbQuery: set
-	})
-})
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Adding Business Events
+
+Add a file called eventLookup.js containing:
+
+export function setEventName(originalUrl, method, statusCode) {
+  let eventName;
+  switch (originalUrl) {
+    case "/users":
+      if (method === "POST" && statusCode === 201) {
+        eventName = "CreateUserSuccess"
+      } else if (method === "POST" && statusCode > 400) {
+        eventName = "CreateUserFailure"
+      }
+      break;
+    default:
+      eventName = "WebRequestEvent";
+      break;
+  }
+  return eventName
+}
 
 Then lets amend the express bit too
 
 File: src/services/express/index.js
 
-app.use(morgan, function ([:date[clf]], :id, :status, :method, :url, :response-time, ":user-agent"') {
-let set = {
-	date: date,
-	id: id,
-	status: status,
-	method: method,
-	url: url,
-	responseTime: responseTime,
-	userAgent: userAgent
-}
+  morgan.token('eventName', function getEventName(req, res) {
+    return eventLookup.setEventName(req.originalUrl, req.method, res.statusCode);
+  });
 
-console.info({
-	webRequest: set
-	})
-})
+  const format = json({
+    short: '[:date[clf]] :id :eventName :method :url :status',
+    length: ':res[content-length]',
+    'response-time': ':response-time ms'
+  });
+
+  app.use(morgan(format));
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+For later
 
 ## Write to file on both, while maintaining std out
 

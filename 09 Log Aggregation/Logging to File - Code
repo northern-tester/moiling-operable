@@ -1,0 +1,45 @@
+  http log to file
+
+import morgan from 'morgan'
+import rfs from 'rotating-file-stream'
+import bodyParser from 'body-parser'
+import path from 'path'
+import generateSafeId from 'generate-safe-id'
+
+
+  const logDirectory = path.join(__dirname, 'logs');
+
+    let accessLogStream = rfs('access.log', {
+    interval: '1d',
+    path: logDirectory
+  });
+
+  app.use(morgan('dev', {
+    skip: function (req, res) {
+      return res.statusCode < 400
+    }
+  }));
+
+  app.use(morgan(function (req, res) {
+    return `{ '${eventLookup.setEventName(req.originalUrl, req.method, res.statusCode)}' : 'timestamp': '${new Date().toISOString()}', 'id': '${generateSafeId()}', 'url' : '${req.originalUrl}', 'status' : '${res.statusCode}', 'method' : '${req.method} }`;
+  }, {stream: accessLogStream}));
+
+
+  Mongo Log to File
+
+import rfs from "rotating-file-stream";
+
+const logDirectory = path.join(__dirname, 'logs');
+
+  let mongoLogStream = rfs('mongo.log', {
+  interval: '1d',
+  path: logDirectory,
+
+});
+
+  mongoLogStream.on("error", (err) => {
+    console.log("RFS error", err);
+  });
+
+  mongoLogStream.write(JSON.stringify(mongoEvent));
+
