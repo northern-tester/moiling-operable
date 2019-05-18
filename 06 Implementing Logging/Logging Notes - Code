@@ -141,8 +141,8 @@ File: src/services/express/index.js
   });
 
   const format = json({
-    short: '[:date[clf]] :id :eventName :method :url :status',
-    length: ':res[content-length]',
+    summary: '[:date[clf]] :id :eventName :method :url :status',
+    response: ':res[content-length]',
     'response-time': ':response-time ms'
   });
 
