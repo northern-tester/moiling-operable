@@ -1,33 +1,56 @@
 # Operability Hooks
 
-## Types
-
-* Liveness
-* Readiness
-* Snapshot
-* Action
-
 ## Focus on Snapshot and Action
 
-### Snapshot
+Start in src/api/index.js
 
-* Lets build a summary of mongo contents hook for our containers
-* We could do this from within an existing endpoint, ask people what they want to expose...
+Add: 
 
-### Action
+import state from './state'
 
-* Lets build a restart hook for the app
-* Must be behind a master token I imagine:
+and
 
-import { password as passwordAuth, master, token } from '../../services/passport'
-import { Router } from 'express'
-import { middleware as query } from 'querymen'
-import { middleware as body } from 'bodymen'
-import { password as passwordAuth, master, token } from '../../services/passport'
-import { reset } from './controller'
+router.use('/state', state)
 
-router.post('/',
-  // for the token master(),
-  // no body - body({ email, password, name, picture, role }),
-  reset)
+Add a folder to api called 'state', then a file called index.js
+
+Populate that file with:
+
+import {Router} from 'express'
+
+const router = new Router();
+
+router.get('/', function (req, res) {
+  res.send("blobby")
+});
+
+export default router;
+
+Expand to gather data:
+
+import {Router} from 'express'
+import {Speaker} from '../speaker'
+
+const router = new Router();
+
+router.get('/:action?', async function (req, res) {
+  if (req.query.action === "speakers") {
+    const count = await Speaker.count({}, function (err) {
+    });
+    const distinct = await Speaker.distinct('name', function (err) {
+    });
+    res.json({
+      "numberOfSpeakers": count,
+      "distinctSpeakers": distinct
+    });
+  } else {
+    res.status(500).send("No parameter")
+  }
+});
+
+
+
+
+
+
 
