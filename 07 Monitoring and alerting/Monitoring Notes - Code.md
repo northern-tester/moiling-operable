@@ -58,6 +58,4 @@ Add an alert, we know about expressions
 
 Alert Challenge!
 
-Setting Your Normal Exercise
-
 

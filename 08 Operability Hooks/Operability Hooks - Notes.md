@@ -8,8 +8,6 @@ Add:
 
 import state from './state'
 
-and
-
 router.use('/state', state)
 
 Add a folder to api called 'state', then a file called index.js
@@ -29,6 +27,7 @@ export default router;
 Expand to gather data:
 
 import {Router} from 'express'
+
 import {Speaker} from '../speaker'
 
 const router = new Router();
@@ -47,10 +46,3 @@ router.get('/:action?', async function (req, res) {
     res.status(500).send("No parameter")
   }
 });
-
-
-
-
-
-
-
